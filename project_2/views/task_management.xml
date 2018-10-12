@@ -1,0 +1,513 @@
+<?xml version="1.0" encoding="utf-8"?>
+    
+<odoo>
+    <menuitem id="menu_task_management_root"
+        name="Task Management"
+        sequence="20"/>
+    <menuitem name="Search"
+        id="menu_task_management"
+        parent="menu_task_management_root"
+        sequence="2" />
+    <menuitem name="Observer"
+        id="menu_task_management_observer"
+        parent="menu_task_management_root"
+        sequence="3" />
+	
+	<menuitem name="Reviewer"
+        id="menu_task_management_reviewer"
+        parent="menu_task_management_root"
+        sequence="4" />
+   
+    <menuitem name="Report"
+        id="menu_task_report"
+        parent="menu_task_management_root"
+        sequence="5"/>
+    
+	<menuitem name="Configuration"
+        id="menu_task_management_config"
+        parent="menu_task_management_root"
+        sequence="6" />
+   
+    
+    <record id="view_task_management_form" model="ir.ui.view">
+        <field name="name">view.task.management.form</field>
+        <field name="model">task.management</field>
+        <field name="arch" type="xml">
+            <form string="Tasks">
+                <header>
+                    
+                    <button name="start_timer" type="object" string="Start time"
+                            attrs="{'invisible':['|',('is_user_working','=',True),
+                            ('state','in',['completed','drop'])]}"/>
+                    <button name="pause_timer" type="object" string="Pause time"
+                            attrs="{'invisible':['|',('is_user_working','=',False),
+                            ('state','in',['interested','completed','drop'])]}"/>
+                    <button name="deffered" type="object" string="Postpone"
+                            attrs="{'invisible':['|',('is_user_working','=',False),
+                            ('state','in',['interested','completed','drop'])]}"/>
+					<button name="waiting" type="object" string="Waiting"
+                            attrs="{'invisible':['|',('is_user_working','=',False),
+                            ('state','in',['interested','completed','drop'])]}"/>
+                    <button name="stop_timer" type="object" string="Stop time"
+                            attrs="{'invisible':[('is_user_working','=',False),
+                            ('state','in',['drop','draft','completed'])]}"/>
+                    <button name="drop_task" type="object" string="Drop"
+                            attrs="{'invisible':[('state','in',['completed','drop','in_progress','interested','draft'])]}"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,in_progress,completed"
+                           options="{'fold_field': 'fold'}"/>
+                </header>
+                <br></br>
+                <div attrs="{'invisible':[('task_exceeded_check','=',False)]}" class="alert alert-danger">
+                    Task is Delayed
+                </div>
+                <div attrs="{'invisible':['|','|','|','|','|',('task_reject','=',False),('state','=','in_progress'),('state','=','completed'),('state','=','pause'),('state','=','deferred'),('state','=','waiting'),]}" class="alert alert-danger">
+                    Task is Rejected
+                </div>
+                
+                <br></br>
+                <field name="task_reject" invisible="1"/>
+                <div class="oe_title">
+                    <h1 class="o_row">
+                        <field name="current_user" readonly="1"/>
+                    </h1>
+                    <br />
+                    <h4 class="o_row">
+                        <field name="task_priority" widget="priority" />
+                    </h4>
+                    <br/>
+                    <h1 class="o_row">
+                        <field name="name" placeholder="Task Title..." required="True"
+                        />
+                    </h1>
+                    
+                </div>
+                
+                <group>
+                    <group>
+                        <!-- <field name="partner_type" nolabel="1" widget="selection" string="" attrs="{'required': [('payment_type', 'in', ('inbound', 'outbound'))], 'invisible': [('payment_type', 'not in', ('inbound', 'outbound'))], 'readonly': [('state', '!=', 'draft')]}"/> -->
+                        <!--<field name="subject"/>-->
+                        <field name="task_type" attrs="{'readonly':[('state','in',['completed','drop'])]}"/>
+                        <field name="reviewer" class="o_task_user_field" options='{"no_open": True}'
+                               attrs="{'readonly':[('state','in',['completed','drop'])], 'required':[('task_type', '!=', 'self_assigned')]}"/>
+                        <field name="assigned_to" class="o_task_user_field" options='{"no_open": True}'
+                                attrs="{'readonly':[('state','in',['completed','drop'])]}" required="1"/>
+                        <field name="observer" widget="many2many_tags"
+                               attrs="{'readonly':[('state','in',['completed','drop'])]}"/>
+                        <!-- <field name="estimated_start_date" required="1" attrs="{'readonly':[('state','in',['completed','drop'])]}"/>
+                        <field name="estimated_end_date" required="1" attrs="{'readonly':[('state','in',['completed','drop'])]}"/> -->
+                        <field name="is_user_working" invisible="1"/>
+                        <field name="task_drop_boolean" invisible="1"/>
+                        <field name="project_id"
+                               attrs="{'readonly':[('state','in',['completed','drop'])]}"/>
+                        <field name="task_allocated_time" widget="float_time" required="1"
+                               attrs="{'readonly':[('state','in',['completed','drop'])]}"/>
+                        <!-- <field name="test_time" widget="timepicker"/> -->
+                        <field name="task_manual_time" widget="timepicker" invisible="1"/>
+                        <field name="current_date" invisible="1"/>
+                        <field name="to_do_task" attrs="{'invisible': [('state','=','completed')]}"/>
+                    </group>
+                    <group invisible="1">
+                        <field name="task_exceeded_time" invisible="1"/>
+                        <field name="task_exceeded_check" invisible="1"/>
+                    </group>
+                    <group>
+                        <field name="deadline" required="1" attrs="{'readonly':[('state','in',['completed','drop'])]}"/>
+                        <field name="estimated_start_date" required="1" attrs="{'readonly':[('state','in',['completed','drop'])]}"/>
+                        <field name="estimated_end_date" required="1" attrs="{'readonly':[('state','in',['completed','drop'])]}"/>
+                        <field name="tag_ids" widget="many2many_tags" options="{'no_open':True,'no_create':1,'no_create_edit':1}"/>
+                        <field name="start_time" invisible="1"/>
+                        <field name="pause_time" invisible="1"/>
+                        <field name="stop_time" invisible="1"/>
+                        <field name="real_duration" invisible="1"/>
+                        <field name="time_spent"/>
+                        <field name="progress" widget="progressbar"/>
+                        <field name="percantage_task_completion"/>
+                    </group>
+                    <group>
+                        <!-- <field name="current_user"/> -->
+                        <field name="task_reminder_check"/>
+                        <field name="task_reminder_date"
+                               attrs="{'invisible':[('task_reminder_check','=',False)],
+                               'required':[('task_reminder_check','=',True)]}"/>
+                        <field name="task_reminder_mailto_selection"
+                               attrs="{'invisible':[('task_reminder_check','=',False)],
+                               'required':[('task_reminder_check','=',True)]}"/>
+                    </group>
+                    <group>
+                        <div>
+                            <group>
+                                <field name="recurrency"/>
+                            </group>
+                            <group name="recurrent_task" attrs="{'invisible': [('recurrency', '=', False)]}">
+                                <button name="create_recurrent_task" type="object" string="Recurrent task" class="oe_highlight"/>
+                            </group>
+                            <div attrs="{'invisible': [('recurrency', '=', False)]}">
+                                <group>
+                                    <label for="interval"/>
+                                    <div class="o_row">
+                                        <field name="interval" attrs="{'required': [('recurrency', '=', True)]}"/>
+                                        <field name="rrule_type" attrs="{'required': [('recurrency', '=', True)]}"/>
+                                    </div>
+                                    <label string="Until" for="end_type"/>
+                                    <div class="o_row">
+                                        <field name="end_type" attrs="{'required': [('recurrency', '=', True)]}"/>
+                                        <field name="count" attrs="{'invisible': [('end_type', '!=', 'count')], 'required': [('recurrency', '=', True)]}"/>
+                                        <!-- <field name="final_date" attrs="{'invisible': [('end_type', '!=', 'end_date')], 'required': [('end_type', '=', 'end_date')]}"/> -->
+                                    </div>
+                                </group>
+                            </div>
+                        </div>
+                    </group>
+                    <group></group>
+                    <group name="weekdays" attrs="{'invisible':[('rrule_type', '!=', 'weekly')]}">
+                        <field name="mo"/>
+                        <field name="tu"/>
+                        <field name="we"/>
+                        <field name="th"/>
+                        <field name="fr"/>
+                        <field name="sa"/>
+                        <field name="su"/>
+                    </group>
+                    <group></group>
+                    <group></group>
+                    <group attrs="{'invisible': [('rrule_type', '!=', 'monthly')]}">
+                        <label string="Day of Month" for="month_by"/>
+                        <div class="o_row">
+                            <field name="month_by"/>
+                            <field name="day"
+                                attrs="{'required': [('month_by', '=', 'date'), ('rrule_type', '=', 'monthly')],
+                                        'invisible': [('month_by', '!=', 'date')]}"/>
+                            <field name="byday" string="The"
+                                attrs="{'required': [('month_by', '=', 'day'), ('rrule_type', '=', 'monthly')],
+                                        'invisible': [('month_by', '!=', 'day')]}"/>
+                            <field name="week_list" nolabel="1"
+                                attrs="{'required': [('month_by', '=', 'day'), ('rrule_type', '=', 'monthly')],
+                                        'invisible': [('month_by', '!=', 'day')]}"/>
+                        </div>
+                    </group>
+
+                    
+
+
+                        
+                    <!--<group>
+                        <field name="task_recurrent_check"/>
+                        <field name="recurrent_rule_type" attrs="{'invisible':[('task_recurrent_check','=',False)]}"/>
+                        <field name="interval" attrs="{'invisible':[('task_recurrent_check','=',False)]}"/>
+                        <field name="end_type" attrs="{'invisible':[('task_recurrent_check','=',False)]}"/>
+                        <field name="recurrent_count" attrs="{'invisible':[('task_recurrent_check','=',False)]}"/>
+                        <field name="recurrent_end_date" attrs="{'invisible':[('task_recurrent_check','=',False)]}"/>
+                    </group>-->
+                </group>
+                <notebook>
+                    <page name="description_page" string="Description">
+                        <field name="description" type="html" attrs="{'readonly':[('state','in',['completed','drop'])]}"/>
+                        <div class="oe_clear"/>
+                    </page>
+                    <page name="check_list_page" string="Check List">
+                        <field name="check_list_id" editable="bottom">
+                            <tree string="Check List" editable="bottom"
+                                  colors="red:state == 'cancel';green:state == 'done';">
+                                <field name="name" attrs="{'readonly':[('state','in',['done'])]}" widget="many2one_clickable"/>
+                                <field name="state" readonly="1" />
+                                <button name="done" type="object" icon="fa fa-check fa-1x"
+                                        attrs="{'invisible':[('state','in',['cancel','done'])]}"/>
+                                <button name="cancel" type="object" icon="fa fa-times fa-1x" 
+                                        attrs="{'invisible':[('state','in',['done','cancel'])]}"/>
+                                <button name="todo" type="object" icon="fa fa-undo fa-1x" 
+                                        attrs="{'invisible':[('state','in',['done','todo'])]}"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page name="manual_time" string="Manual Time">
+                        <field name="task_manual_time" editable="bottom" delete="false">
+                            <tree string="Manual Time" editable="bottom" delete="false" 
+                                attrs="{'readonly':[('is_editable','=',True)]}">
+                                <field name="task_manual_date"/>
+								<field name="task_start_time" widget="float_time"/>
+								<field name="task_end_time" widget="float_time"/>
+                                <field name="task_manual_time" sum="Total Time Spent" widget="float_time"/>
+                                <field name="task_manual_comments" edit="true"/>
+                            </tree>
+                            <form>
+                                <group col="4" colspan="2">
+                                    <field name="task_manual_date"/>
+                                    <field name="task_start_time" widget="timepicker"/>
+                                    <field name="task_end_time" widget="timepicker"/>
+                                    <field name="task_manual_time" sum="Total Time Spent" widget="float_time"/>
+                                    <field name="task_manual_comments"/>
+                                </group>
+                            </form>
+                        </field>
+                    </page>
+                    <page name="comments" string="Comments">
+                        <field name="comment_id" editable="bottom">
+                            <tree string="Comments" editable="bottom">
+                                <field name="filename" invisible="1"/>
+                                <field widget ="binary" name="attachment" filename="filename"/>
+                                <!-- <field name="start_date"/> -->
+                                <field name="comments"/>
+                               
+                            </tree>
+                        </field>
+                    </page>
+                    <page name="reason_for_delay" string="Reason for delay"
+                          attrs="{'invisible':[('task_exceeded_check','=',False)]}">
+                        <div class="oe_clear"/>
+                        <field name="task_delay_reason"
+                               attrs="{'required':[('task_exceeded_check','=',True)]}"/>
+                    </page>
+                    <page name="observer_comments" string="Observer Comments" invisible="1">
+                        <div class="oe_clear"/>
+                        <field name="observer_comments"/>
+                    </page>
+					<page name="observer_comments_o2m" string="Observer Comments">
+                        <div class="oe_clear"/>
+                        <field name="observer_comments_ids">
+							<tree string="Observer Comments" editable="bottom" default_order="id desc">
+								<field name="observer_timestamp"/>
+								<field name="name" required="1"/>
+							</tree>
+						</field>
+                    </page>
+                    <page string="History" invisible="1">
+                        <field name="task_history" readonly ="1">
+                           <tree>
+                                <field name="task_history_date" string="Date"/>
+								<field name="task_start_time" string="Start Time" widget="float_time"/>
+                                <field name="task_stop_time" string="Stop Time" widget="float_time"/>
+								<field name="task_spend_time" string="Time Spend" widget="float_time"/>
+								<field name="task_percent_completion" string="Completion Percentage"/>
+                                <field name="progress_percent" string="Progress Percentage"/>
+                            </tree>
+                        </field>
+                    </page>
+                    
+                </notebook>
+            </form> 
+        </field>
+    </record>
+    
+
+    
+    <record id="view_task_management_tree" model="ir.ui.view">
+        <field name="name">view.task.management.tree</field>
+        <field name="model">task.management</field>
+        <field eval="2" name="priority"/>
+        <field name="arch" type="xml">
+            <tree string="Tasks" default_order="estimated_start_date desc">
+                
+                <field name="task_priority"/>
+                <field name="task_type"/>
+                <field name="name"/>
+               
+                <field name="estimated_start_date"/>
+                <field name="state"/>
+                <field name="deadline"/>
+                <field name="task_allocated_time" widget="float_time"/>
+                <field name="observer_comments"/>
+                <field name="assigned_to" invisible="1"/>
+                <!-- <field name="current_month_tasks"/> -->
+                
+            </tree>
+        </field>
+    </record>
+    
+    <record id="view_task_management_kanban" model="ir.ui.view">
+        <field name="name">view.task.management.kanban</field>
+        <field name="model">task.management</field>
+        <field name="arch" type="xml">
+            <kanban colors="red:approval_status == 'reject';green:approval_status == 'approved';" default_order="estimated_start_date desc">
+                <field name="task_priority"/>
+                <field name="name" />
+                <field name="estimated_start_date"/>
+                <field name="time_spent"/>
+                <field name="assigned_to"/>
+                <field name="state"/>
+                <field name="is_user_working"/>
+				<field name="task_reject"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_content oe_kanban_global_click">
+                            <div>
+                                <strong><field name="name"/></strong>
+                                <strong style="float:right;color:#228ebb"><field name="state"/></strong>
+                            </div>
+                            <div>
+                                <field name="estimated_start_date"/> 
+                            </div>
+                            <div>
+                                <span><strong>Reviewer:</strong></span><field name="reviewer"/>
+                            </div>
+                                
+                            
+                            <a name="start_timer" type="object"
+                                attrs="{'invisible':['|',('is_user_working','=',True),
+                                    ('state','in',['completed','drop'])]}">
+                                <i class="fa fa-youtube-play fa-2x" style="color:green;"
+                                   aria-hidden="true"></i>
+                            </a>
+                            
+                            <a name="pause_timer" type="object"
+                                attrs="{'invisible':['|',('is_user_working','=',False),
+                                    ('state','in',['interested','completed','drop'])]}">
+                                <i class="fa fa-pause-circle fa-2x" style="color:#f49d00;"
+                                   aria-hidden="true"></i>
+                            </a>
+                            
+                            <a name="stop_timer" type="object"
+                                attrs="{'invisible':[('is_user_working','=',False),
+                                    ('state','in',['drop','draft','completed'])]}">
+                                <i class="fa fa-stop-circle fa-2x" style="color:red;"
+                                   aria-hidden="true"></i>
+                            </a>
+                            
+                            <div class="o_kanban_footer">
+                                <field name="task_priority" widget="priority" groups="base.group_user"/>
+                                <b>
+                                <p
+								   attrs="{'invisible':[('state','in',['completed','deferred','drop'])]}">
+									Approval Status:
+                                    <field name="approval_status" widget="color">
+                                    </field>
+                                </p>
+                                </b>
+                                <div>
+                                    <img
+                                        t-att-src="kanban_image('res.users', 'image_small', record.assigned_to.raw_value)"
+                                        t-att-title="record.assigned_to.value"
+                                        width="24" height="24" class="oe_kanban_avatar pull-right"/>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+    
+    <record id="view_task_management_filter" model="ir.ui.view">
+        <field name="name">view.task.management.filter</field>
+        <field name="model">task.management</field>
+        <field name="arch" type="xml">
+            <search string="Search Tasks">
+                <field name="name" string="Task Name"/>
+                <field name="deadline" string="Deadline"/>
+                <separator/>
+				
+                <filter string="Today's Tasks" name="today"
+                        domain="[('estimated_start_date', '=', context_today().strftime('%Y-%m-%d')),
+                                ('state','!=','completed')]"/>
+                <!-- <filter string="Tasks Assigned To" name="assigned_tasks"
+                        domain="[('reviewer', '=', uid)]"/> -->
+                <filter string="Pending Tasks" name="pending" domain="[('state','!=','completed')]"/>
+                <!--<filter string="Approved Tasks" name="approved" domain="[('approval_status','=','approved')]"/>-->
+				<filter string="Completed Tasks" name="completed" domain="[('state','=','completed')]"/>
+                <filter string="Rejected Tasks" name="rejected" domain="[('task_reject','=',True)]"/>
+                <filter string="Paused Tasks" name="paused" domain="[('state','=','pause')]"/>
+                <filter string="Dropped Tasks" name="dropped" domain="[('state','=','drop')]"/>
+                <filter string='From Month' domain="[]" context="{'group_by' : 'estimated_start_date'}"/>
+                <filter string="Status" domain="[]" context="{'group_by' : 'state'}" />
+                <!-- <filter string="Current Week" name="Current Week" domain="[('date','&lt;',(context_today()+relativedelta(days=7)).strftime('%Y-%m-%d')), ('date','&gt;=',context_today().strftime('%Y-%m-%d'))]"/> -->
+                
+            </search>
+        </field>
+        </record>
+     
+   
+    
+    <record id="action_view_task_mangement" model="ir.actions.act_window">
+        <field name="name">Tasks</field>
+        <field name="res_model">task.management</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="context">{
+                            'search_default_today': 1,
+                        }
+        </field>
+        <field name="domain">[('assigned_to','=',uid)]</field>
+        <field name="search_view_id" ref="view_task_management_filter"/>
+        <field name="help" type="html">
+            <p>
+                Custom task management.
+            </p>
+        </field>
+    </record>
+    
+    <record id="ir_cron_check_mail_task" model="ir.cron">
+        <field name="name">Checking Mails</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model">task.management</field>
+        <field name="function">check_mail_task</field>
+        <field name="args">()</field>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="ir_cron_task_remainder" model="ir.cron">
+        <field name="name">Task Remainder Check</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model">task.management</field>
+        <field name="function">cron_remainder_task</field>
+        <field name="args">()</field>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="ir_cron_recreate_task" model="ir.cron">
+        <field name="name">Rejected Task Recreation</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model">task.management</field>
+        <field name="function">cron_recreate_task</field>
+        <field name="args">()</field>
+        <field name="active" eval="True"/>
+    </record>
+
+
+
+    <menuitem action="action_view_task_mangement" id="menu_action_view_task_management"
+              parent="menu_task_management" sequence="5"/>
+
+    <record id="action_view_task_mangement_observer" model="ir.actions.act_window">
+        <field name="name">Tasks</field>
+        <field name="res_model">task.management</field>
+        <field name="view_mode">kanban,form,tree</field>
+        <field name="context">{
+                            'search_default_today': 1,
+                        }
+        </field>
+        <field name="domain">[('observer','=',uid)]</field>
+        <field name="help" type="html">
+            <p>
+                No Task for Observer today.
+            </p>
+        </field>
+    </record>
+    <menuitem action="action_view_task_mangement_observer" id="menu_action_view_task_management_observer"
+              parent="menu_task_management_observer" sequence="1"/>
+	
+	<record id="action_view_task_mangement_reviewer" model="ir.actions.act_window">
+        <field name="name">Tasks</field>
+        <field name="res_model">task.management</field>
+        <field name="view_mode">kanban,form,tree</field>
+        <field name="context">{
+                            'search_default_today': 1,
+                        }
+        </field>
+        <field name="domain">[('reviewer','=',uid)]</field>
+        <field name="help" type="html">
+            <p>
+                No Task for Observer today.
+            </p>
+        </field>
+    </record>
+    <menuitem action="action_view_task_mangement_reviewer" id="menu_action_view_task_management_reviewer"
+              parent="menu_task_management_reviewer" sequence="1"/>
+</odoo>

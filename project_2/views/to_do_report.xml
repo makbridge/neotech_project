@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+		
+		<!--Form View-->
+		<record id="to_do_report_form" model="ir.ui.view">
+			<field name="name">To Do Report</field>
+			<field name="model">todo.report</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<form string="To Do Report" create="false" edit="false">
+				
+					<!--<field name="report_type"/>-->
+					<sheet>
+						<group>
+							<group>
+								<field name="date_from" string="From Date" />
+                               	<field name="employee_id" string="Employee" widget="selection" required="1"/>
+							</group>
+							<group>
+								<field name="date_to" string="To Date"/>
+							</group>
+							<group>
+								<field name="file_name" invisible="1"/>                
+							</group>
+						</group>
+						<group>
+							<span>
+								<button name="print_to_do_report" string="Print To Do Report" class="oe_highlight" type="object"/>
+							</span>
+							<span>
+								<field name="to_do_excel_sheet" nolabel="1" readonly="1" width="100" filename="file_name"/>
+							</span>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<!--Action-->
+		<record id="action_to_do_report" model="ir.actions.act_window">
+			<field name="name">To Do report excel action</field>
+			<field name="res_model">todo.report</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+			<field name="context">{}</field>
+			<field name="domain">[]</field>
+			<field name="help">To Do report</field>
+		</record>
+		
+		<!--Menuitem-->
+		<menuitem id="menu_to_do_report_excel" name="To Do Report" parent="menu_task_report"
+				  action="action_to_do_report"/>
+	
+	
+    </data>	
+</odoo>

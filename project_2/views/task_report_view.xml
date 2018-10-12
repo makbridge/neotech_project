@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<openerp>
+	<data>
+        
+         
+		<record model="ir.ui.view" id="task_report_form">
+			<field name="name">task.report.form</field>
+			<field name="model">task.report</field>
+			<field name="arch" type="xml">
+				<form string="Search Customer">
+					<group>
+					<group>
+						<field name="date_from" required="1"/>
+						<field name="employee_id" required="1"/>
+						<!-- attrs="{'readonly':[('employee_id','!=',1)]}" --> 
+					</group>
+					<group >
+						
+						<field name="date_to" required="1"/>
+						
+					</group>
+					</group>
+					
+					<footer>
+						<button name="search_tree_view" string="Search" type="object" icon="fa-search" />
+						<!-- <button string="Cancel" name="cancel" class="oe_link"/> -->
+					</footer>
+				</form>
+			</field>
+		</record>
+		
+		<record model="ir.actions.act_window" id="action_view_report">
+			<field name="name">Online Report</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">task.report</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+			<field name="view_id" ref="task_report_form" />
+			<field name="target">new</field>
+			<field name="domain">[]</field>
+			<field name="context">{}</field>
+		</record>
+		<record model="ir.actions.act_window.view" id="action_view_report_form">
+			<field name="act_window_id" ref="action_view_report" />
+            <field name="sequence" eval="20" />
+            <field name="view_mode">form</field>
+			<field name="view_id" ref="task_report_form" />
+		</record>
+          <menuitem action="action_view_report" id="menu_action_view_report"
+          parent="menu_task_report" sequence="1"/>
+    
+        
+    
+    </data>
+</openerp>

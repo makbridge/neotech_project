@@ -1,0 +1,10 @@
+.o_form_editable .o_form_field_time input {
+    width: 6em;
+}
+.o_form_field_time{
+    display: -webkit-inline-box !important;
+}
+.o_list_view .o_list_number {
+    text-align: left;
+    white-space: nowrap;
+}

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!--<record model="ir.rule" id="task_management_rule">-->
+        <!--    <field name="name">Task See own rule</field>-->
+        <!--    <field name="model_id" ref="model_task_management"/>-->
+        <!--    <field name="domain_force">[('assigned_to','=', user.id)]</field>-->
+        <!--</record>-->
+    	<!-- <record model="ir.rule" id="ir_rule_report_excel">
+	        <field name="name">Report Excel Rule</field>
+	        <field name="model_id" ref="base.model_res_users"/>
+	        <field name="domain_force">[('id', '=', user.id)]</field>
+	        <field name="perm_read" eval="True"/>
+	        <field name="perm_write" eval="True"/>
+	        <field name="perm_unlink" eval="True"/>
+	        <field name="perm_create" eval="True"/>
+    	</record> -->
+        
+    </data>
+</odoo>

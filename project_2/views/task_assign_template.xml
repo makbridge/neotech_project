@@ -1,0 +1,69 @@
+<?xml version="1.0" ?>
+<odoo>
+    <data>
+        
+        <record id="email_template_edi_task_assign" model="mail.template">
+            <field name="name">Task Assign...!!</field>
+            <field name="email_from">${object.assigned_to.company_id.name}&lt;${object.assigned_to.company_id.email}&gt;</field>
+            <field name="email_to">${object.assigned_to.partner_id.email}</field>
+            <field name="subject">Task notification</field>
+            <field name="model_id" ref="model_task_management"/>
+            <field name="auto_delete" eval="True" />
+            <field name="body_html"><![CDATA[
+                <div class="page">
+                    <div style="font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif;
+                            font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
+                        <p>Hello ${object.assigned_to.partner_id.name},</p>
+                        <p> This Email Is To tell You That New Task is assigned to you As  Below Listed Which is Due On
+                            ${object.estimate_start_date}. </p>
+                    </div>
+                    <div>
+                       <table class="table table-condensed">
+                             <thead>
+                                <tr>
+                                    <th style="background-color:#9b9da0 !important;">Task</th>
+                                    <th style="background-color:#9b9da0 !important;">Deadline</th>
+                                    
+                                    
+                                </tr>
+                             </thead>
+                             <tbody>
+                                    <tr>
+                                        <td><span>${object.name}</span></td>
+                                        <td><span>${object.deadline}</span></td>
+                                      
+                                        
+                                    </tr>
+                             </tbody>
+                       </table>
+                    </div>
+                </div>
+                ]]>
+            </field>
+        </record>
+
+        
+        <record id="mail_on_rejection_of_task" model="mail.template">
+            <field name="name">Task Rejected</field>
+            <field name="email_from">${object.assigned_to.company_id.name}&lt;${object.assigned_to.company_id.email}&gt;</field>
+            <field name="email_to">${object.assigned_to.partner_id.email}</field>
+            <field name="subject">Task Rejection Notification</field>
+            <field name="model_id" ref="model_task_management"/>
+            <field name="auto_delete" eval="True" />
+            <field name="body_html"><![CDATA[
+                <div class="page">
+                    <div style="font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif;
+                            font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
+                        <p>Hello ${object.assigned_to.partner_id.name},</p>
+                        <p> <strong>${object.name}</strong> has been rejected by your respective reviewer.
+                            Kindly check your recreated task.</p>
+                    </div>
+                </div>
+
+            ]]>
+
+            </field>
+    </record>
+
+    </data>
+</odoo>

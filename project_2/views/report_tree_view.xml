@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <!--<record id="action_not_started_dashboard" model="ir.actions.server" >
+			<field name="name">Report Not Started</field>
+			<field name="model_id" ref="model_task_report"/>
+			<field name="type">ir.actions.server</field>
+			<field name="view_mode">tree,search</field>
+            <field name="context">{-->
+            <!--    'default_partner_id': 'active_id'}</field>-->
+			<!--<field name="state">code</field>
+			<field name="code">
+				action = env['task.report'].search_tree_view()
+				</field>
+		</record>-->
+        
+        
+        <record id="view_task_management_tree_report" model="ir.ui.view">
+            <field name="name">view.task.management.tree.inherit</field>
+            <field name="model">task.management</field>
+            <field eval="2" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="Tasks">
+                    
+                    <field name="task_priority"/>
+                    <field name="task_type"/>
+                    <field name="name"/>
+                  
+                    <field name="estimated_start_date" string="Suggested Start Date"/>
+					<field name="estimated_end_date" string="End Date"/>
+					<!-- <field name="attended_time"/> -->
+                    <field name="state"/>
+                    <field name="deadline"/>
+                    <field name="task_allocated_time" widget="float_time"/>
+					<field name="cummulative_time"/>
+                    <field name="timed_time"/>
+                    <field name="manual_time"/>
+					<field name="total_working_time"/>
+                    <field name="overlap_time"/>
+                    <!-- <field name="ideal_time"/> -->
+					<field name="initial_completion"/>
+                    <field name="current_completion"/>
+                    <field name="completion"/>
+                    <field name="variation"/>
+                    <field name="delay"/>
+					<field name="comment"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="view_task_management_filter_report" model="ir.ui.view">
+        <field name="name">view.task.management.filter</field>
+        <field name="model">task.management</field>
+        <field name="arch" type="xml">
+            <search string="Search Tasks">
+                <field name="name" string="Task Name"/>
+                <field name="deadline" string="Deadline"/>
+                <separator/>
+				<filter string="Task Status" name="state"
+				context="{'group_by':'state'}"/>
+                <filter string="Today Tasks" name="today"
+                        domain="[('deadline', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter string="Tasks Assigned To" name="assigned_tasks"
+                        domain="[('reviewer', '=', uid)]"/>
+            </search>
+        </field>
+		</record>
+		
+		
+		<record id="action_view_task_mangement_report" model="ir.actions.act_window">
+        <field name="name">Task Report</field>
+        <field name="res_model">task.management</field>
+        <field name="view_mode">tree,form</field>
+        <!--<field name="view_mode">tree</field>-->
+        
+        <field name="search_view_id" ref="view_task_management_filter_report"/>
+        
+    </record>
+		
+    </data>
+</odoo>

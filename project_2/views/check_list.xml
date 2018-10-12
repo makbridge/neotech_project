@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_check_list_form" model="ir.ui.view">
+        <field name="name">view.check.list.form</field>
+        <field name="model">check.list</field>
+        <field name="arch" type="xml">
+            <form string="Check List">
+                <header>
+                    <button name="done" type="object" string="Done"
+                            attrs="{'invisible':[('state','in',['cancel','done'])]}"/>
+                    <button name="cancel" type="object" string="Cancel"
+                                attrs="{'invisible':[('state','in',['done','cancel'])]}"/>
+                    <button name="todo" type="object" string="To Do"
+                                attrs="{'invisible':[('state','in',['done','todo'])]}"/>
+                    <field name="state" widget="statusbar"
+                               options="{'fold_field': 'fold'}"/>
+                </header>
+                
+                <group>
+                    <group>
+                        <field name="name" attrs="{'readonly':[('state','in',['done'])]}"/>  
+                    </group>
+                </group>
+            </form> 
+        </field>
+    </record>
+    
+    <record id="view_check_list_tree" model="ir.ui.view">
+        <field name="name">view.check.list.tree</field>
+        <field name="model">check.list</field>
+        <field eval="2" name="priority"/>
+        <field name="arch" type="xml">
+            <tree string="Check List">
+                <field name="name"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    
+    <record id="action_view_check_list" model="ir.actions.act_window">
+        <field name="name">Check List</field>
+        <field name="res_model">check.list</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

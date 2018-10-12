@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_tags_config_form" model="ir.ui.view">
+        <field name="name">view.tags.config.form</field>
+        <field name="model">tags.config</field>
+        <field name="arch" type="xml">
+            <form string="Tags">
+                <group>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </group>
+            </form> 
+        </field>
+    </record>
+    
+    <record id="view_tags_config_tree" model="ir.ui.view">
+        <field name="name">view.tags.config.tree</field>
+        <field name="model">tags.config</field>
+        <field eval="2" name="priority"/>
+        <field name="arch" type="xml">
+            <tree string="Tags">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+    
+    <record id="action_view_tags_config" model="ir.actions.act_window">
+        <field name="name">Tags</field>
+        <field name="res_model">tags.config</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p>
+                Tags configuration.
+            </p>
+        </field>
+    </record>
+    
+    <menuitem action="action_view_tags_config" id="menu_action_view_tags_config"
+              parent="menu_task_management_config" sequence="5" groups="base.group_erp_manager"/>
+</odoo>

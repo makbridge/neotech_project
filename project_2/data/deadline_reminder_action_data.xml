@@ -1,0 +1,112 @@
+<?xml version="1.0" ?>
+<odoo>
+    <data>
+        
+        <record id="email_template_edi_deadline_reminder" model="mail.template">
+            <field name="name">Deadline Reminder...!!</field>
+            <field name="email_from">${object.assigned_to.company_id.name}&lt;${object.assigned_to.company_id.email}&gt;</field>
+            <field name="email_to">${object.assigned_to.partner_id.email}</field>
+            <field name="subject">Task due notification</field>
+            <field name="model_id" ref="model_task_management" />
+            <field name="auto_delete" eval="True" />
+            <field name="body_html"><![CDATA[
+                <div class="page">
+                    <div style="font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif;
+                            font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
+                        <p>Hello ${object.assigned_to.partner_id.name},</p>
+                        <p> This Email Is To Remind  You That You Have Task as Below Listed Which is Due On
+                            ${object.estimate_start_date}. </p>
+                    </div>
+                    <div>
+                       <table class="table table-condensed">
+                             <thead>
+                                <tr>
+                                    <th style="background-color:#9b9da0 !important;">Task</th>
+                                    <th style="background-color:#9b9da0 !important;">Deadline</th>
+                                    <th style="background-color:#9b9da0 !important;">Assigned To</th>
+                                    <th style="background-color:#9b9da0 !important;">Link</th>
+                                </tr>
+                             </thead>
+                             <tbody>
+                                    <tr>
+                                        <td><span>${object.name}</span></td>
+                                        <td><span>${object.deadline}</span></td>
+                                        <td><span>${object.assigned_to.partner_id.name}</span></td>
+                                        <td><a href=/web/login/>View Now</a></td>
+                                    </tr>
+                             </tbody>
+                       </table>
+                    </div>
+                </div>
+                ]]>
+            </field>
+        </record>
+        
+         
+        <record id="email_template_edi_daily_task" model="mail.template">
+            <field name="name">Daily Task Performed...!!</field>
+            <!--<field name="email_from">${object.assigned_to.company_id.name}&lt;${object.assigned_to.company_id.email}&gt;</field>-->
+            <!--<field name="email_to">${object.assigned_to.partner_id.email}</field>-->
+            <field name="subject">Daily Task notification</field>
+            <field name="model_id" ref="model_task_management" />
+            <field name="auto_delete" eval="True" />
+            <field name="body_html"><![CDATA[
+                <div class="page">
+                    <div style="font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif;
+                            font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
+                       
+                        <p> This Email Is for Your Daily Task Performed....!!!!!
+                            </p>
+                    </div>
+                   
+                </div>
+                ]]>
+            </field>
+        </record>
+        
+        <record id="email_template_deffered_task" model="mail.template">
+            <field name="name">Deffered Task...!!</field>
+            <!--<field name="email_from">${object.assigned_to.company_id.name}&lt;${object.assigned_to.company_id.email}&gt;</field>-->
+            <!--<field name="email_to">${object.assigned_to.partner_id.email}</field>-->
+            <field name="subject">Postpone task approval</field>
+            <field name="model_id" ref="model_task_management" />
+            <field name="auto_delete" eval="True" />
+            <field name="body_html"><![CDATA[
+                <div class="page">
+                    <div style="font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif;
+                            font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
+                       
+                        <p>
+                            This Email Is for the postponed task....!!!!!
+                        </p>
+                    </div>
+                   
+                </div>
+                ]]>
+            </field>
+        </record>
+        
+        <record id="email_template_drop_task" model="mail.template">
+            <field name="name">Drop Task...!!</field>
+            <!--<field name="email_from">${object.assigned_to.company_id.name}&lt;${object.assigned_to.company_id.email}&gt;</field>-->
+            <!--<field name="email_to">${object.assigned_to.partner_id.email}</field>-->
+            <field name="subject">Drop task approval</field>
+            <field name="model_id" ref="model_task_management" />
+            <field name="auto_delete" eval="True" />
+            <field name="body_html"><![CDATA[
+                <div class="page">
+                    <div style="font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif;
+                            font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
+                       
+                        <p>
+                            This Email Is for the Drop task....!!!!!
+                        </p>
+                    </div>
+                   
+                </div>
+                ]]>
+            </field>
+        </record>
+
+    </data>
+</odoo>

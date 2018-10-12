@@ -1,0 +1,11 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_task_management,access_task_management,model_task_management,base.group_user,1,1,1,1
+access_check_list,access_check_list,model_check_list,base.group_user,1,1,1,1
+access_comments_management,access_comments_management,model_comments_management,base.group_user,1,1,1,1
+access_tags_config,access_tags_config,model_tags_config,base.group_user,1,1,1,1
+access_task_summary,access_task_summary,model_task_summary,base.group_user,1,1,1,1
+access_manual_time,access_manual_time,model_manual_time,base.group_user,1,1,1,1
+access_task_history,access_task_history,model_task_history,base.group_user,1,1,1,1
+access_report_excel,access_report_excel,model_report_excel,base.group_user,1,1,1,1
+access_task_report,access_task_report,model_task_report,base.group_user,1,1,1,1
+access_observer_comments,access_observer_comments,model_observer_comments,base.group_user,1,1,1,1
