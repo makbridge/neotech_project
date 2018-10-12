@@ -13,6 +13,8 @@
                     <button name="approve" type="object" string="Approval"
                             attrs="{'invisible':[('state','in',['draft','approved'])]}"
                             invisible="1"/>
+                    <button name="mass_approval" type="object" string="Approve All"/>
+                    <button name="mass_rejection" type="object" string="Reject All"/>
                     <field name="state" widget="statusbar"/>
                 </header>
                 <br></br>
@@ -28,11 +30,11 @@
                         <field name="timesheet_date" readonly="1"/>
                     </group>
                 </group>
-                <group>
+<!--                 <group>
                     <button name="mass_approval" type="object" string="Approve All"/>
                     <button name="mass_rejection" type="object" string="Reject All"/>
                 </group>
-                <group>
+ -->                <group>
                 <notebook>
                     <page name="task_summary_details" string="Summary">
                         <field name="task_summary" editable="bottom">
