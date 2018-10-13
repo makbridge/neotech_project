@@ -408,7 +408,7 @@
                 <filter string="Pending Tasks" name="pending" domain="[('state','!=','completed')]"/>
                 <!--<filter string="Approved Tasks" name="approved" domain="[('approval_status','=','approved')]"/>-->
 				<filter string="Completed Tasks" name="completed" domain="[('state','=','completed')]"/>
-                <filter string="Rejected Tasks" name="rejected" domain="[('task_reject','=',True)]"/>
+                <!-- <filter string="Rejected Tasks" name="rejected" domain="[('task_reject','=',True)]"/> -->
                 <filter string="Paused Tasks" name="paused" domain="[('state','=','pause')]"/>
                 <filter string="Dropped Tasks" name="dropped" domain="[('state','=','drop')]"/>
                 <filter string='From Month' domain="[]" context="{'group_by' : 'estimated_start_date'}"/>
