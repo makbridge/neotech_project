@@ -36,7 +36,8 @@ class TaskReport(models.Model):
                  raise ValidationError(_('Please Select Proper Date.'))   
         todays_date = datetime.today().strftime('%Y-%m-%d')
         task_search_ids = self.env['task.management'].search([('current_date','=',todays_date),
-                                            ('assigned_to','=',self.employee_id.id)])
+                                            ('assigned_to','=',self.employee_id.id),
+                                            ('state','!=','draft')])
             # ('state','in',['draft','drop','deffered','waiting','pause','completed','in_progress'])])
         
         print "task_search_ids=======================",task_search_ids
@@ -267,7 +268,7 @@ class TaskReport(models.Model):
            'view_mode': 'form',
            'view_type': 'form',
            'domain': [('estimated_start_date','>=',self.date_from),('estimated_start_date','<=',self.date_to),
-            ('assigned_to', '=',self.employee_id.id)],
+            ('assigned_to', '=',self.employee_id.id),('state','!=','draft')],
            'target': 'current',
            'views': [(report_tree, 'tree'),(report_form, 'form'),(report_search,'search')],
            'context': {'create': False,'edit': True,'remove_uid_domain': True},
