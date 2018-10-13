@@ -37,6 +37,7 @@
                     <field name="manual_time"/>
 					<field name="total_working_time"/>
                     <field name="overlap_time"/>
+                    <field name="total_time"/>
                     <!-- <field name="ideal_time"/> -->
 					<field name="initial_completion"/>
                     <field name="current_completion"/>
