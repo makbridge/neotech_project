@@ -1436,8 +1436,13 @@ class report_excel(models.TransientModel):
         for rec in self:
             date_from=rec.date_from
             date_to=rec.date_to
-            # if date_from > date_to:
-            #      raise ValidationError(_('Please Select Proper Date.'))                
+           
+            if not date_from:
+                raise ValidationError(_('Please Enter From Date'))
+            if date_from and date_to:
+              if date_from > date_to:
+                raise ValidationError(_('Please Select Proper Date.'))
+                           
         fp = StringIO()
         workbook = xls.Workbook(fp)
         
@@ -1520,18 +1525,17 @@ class report_excel(models.TransientModel):
         myDate = date.today()
         today_date =  str(myDate.month)+ "/" + str(myDate.day) + "/" + str(myDate.year)
         todays_date = datetime.today().strftime('%Y-%m-%d')
-        task_search_ids = self.env['task.management'].search([
-                                            ('assigned_to','=',self.employee_id.id),
-                                            ('state','in',['draft','drop','deffered','waiting','pause','completed','in_progress'])])
-        print "\n\n_______task_search_ids_______",task_search_ids
-        # ts_ids = self.env['task.management'].search([('current_date','=',todays_date),('assigned_to','=',self.employee_id.id)])
-        # print "\n\n___________ts_ids______________",ts_ids
-        # ('state','in',['draft','drop','deffered','waiting','pause','completed','in_progress'])])
-        # task_summary_ids = self.env['task.summary'].search([('reviewer_id','=',self.reviewer_id1.id)])
-        # print "\n\n______task_summary_ids_____1452____-",task_summary_ids
-
-        rewer_id = task_search_ids[0].task_summary_id.reviewer_id
-        print "\n\n________rewer_id_________",rewer_id,rewer_id.name
+        if self.date_from and self.date_to:
+	        task_search_ids = self.env['task.management'].search([('estimated_start_date','>=',self.date_from),('estimated_start_date','<=',self.date_to),
+	                                            ('assigned_to','=',self.employee_id.id),
+	                                            ('state','in',['draft','drop','deffered','waiting','pause','completed','in_progress'])])
+        elif self.date_from:
+	    	task_search_ids = self.env['task.management'].search([('estimated_start_date','=',self.date_from),
+	                                            ('assigned_to','=',self.employee_id.id),
+	                                            ('state','in',['draft','drop','deffered','waiting','pause','completed','in_progress'])])
+        rewer_id=0
+        if task_search_ids:
+           rewer_id = task_search_ids[0].task_summary_id.reviewer_id
         if rewer_id:
             worksheet.merge_range(0, 14, 0, 18, "Reviewer: "+rewer_id.name,title_format)
 
