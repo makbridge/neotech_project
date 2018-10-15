@@ -13,9 +13,9 @@
                     <button name="approve" type="object" string="Approval"
                             attrs="{'invisible':[('state','in',['draft','approved'])]}"
                             invisible="1"/>
-                    <button name="mass_approval" type="object" string="Approve All"/>
+<!--                     <button name="mass_approval" type="object" string="Approve All"/>
                     <button name="mass_rejection" type="object" string="Reject All"/>
-                    <field name="state" widget="statusbar"/>
+ -->                    <field name="state" widget="statusbar"/>
                 </header>
                 <br></br>
                 <div attrs="{'invisible':[('state','in',['draft','waiting'])]}" class="alert alert-success">
@@ -28,6 +28,10 @@
                     <group>
                         <field name="reviewer_id"/>
                         <field name="timesheet_date" readonly="1"/>
+                    </group>
+                    <group>
+                        <button name="mass_approval" type="object" string="Approve All"/>
+                        <button name="mass_rejection" type="object" string="Reject All"/>
                     </group>
                 </group>
 <!--                 <group>
