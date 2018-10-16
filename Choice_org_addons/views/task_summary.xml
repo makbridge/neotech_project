@@ -30,6 +30,7 @@
                         <field name="timesheet_date" readonly="1"/>
                     </group>
                     <group>
+                        approval_status
                         <button name="mass_approval" type="object" string="Approve All"/>
                         <button name="mass_rejection" type="object" string="Reject All"/>
                     </group>

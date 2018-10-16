@@ -54,8 +54,8 @@
                     <button name="drop_task" type="object" string="Drop"
                             attrs="{'invisible':[('state','in',['completed','drop','in_progress','interested','draft'])]}"/>
 
-<!--                 <button name="approve_task" type="object" string="Approve"/>
-                <button name="reject_task" type="object" string="Reject" />
+<!--                 <button name="approve_task" type="object" string="Approve" attrs="{'invisible':[('approval_status', '!=', 'reject'),('state','=','completed')]}" />
+                <button name="reject_task" type="object" string="Reject" attrs="{'invisible':[('approval_status', '!=', 'reject'),('state','=','completed')]}" />
  -->
                     <field name="state" widget="statusbar" statusbar_visible="draft,in_progress,completed"
                            options="{'fold_field': 'fold'}"/>
@@ -70,6 +70,8 @@
                 
                 <br></br>
                 <field name="task_reject" invisible="1"/>
+<!--                 <field name="approval_status" invisible="1"/>
+ -->
                 <div class="oe_title">
                     <h1 class="o_row">
                         <field name="current_user" readonly="1"/>
@@ -370,8 +372,8 @@
                                 <field name="task_priority" widget="priority" groups="base.group_user"/>
                                 <b>
                                 <p
-								   attrs="{'invisible':[('state','in',['completed','deferred','drop'])]}">
-									Approval Status:
+								   attrs="{'invisible':[('state','in',['completed','deferred','drop','draft','in_progress','pause','waiting'])]}">
+									Approval Status:   
                                     <field name="approval_status" widget="color">
                                     </field>
                                 </p>
