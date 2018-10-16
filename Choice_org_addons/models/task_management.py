@@ -1162,10 +1162,22 @@ class manual_time(models.Model):
             # task_manual_time3 = date.strftime(task_manual_time2, '%H:%M')
             self.task_manual_time = task_manual_time
 
-        if self.task_start_time > 24:
-            raise Warning(_("Invalid Time"))
-        if self.task_end_time > 24:
-            raise Warning(_("Invalid Time"))
+        seconds = self.task_start_time*60*60
+        minutes, seconds = divmod(seconds, 60)
+        hours, minutes = divmod(minutes, 60)
+
+        # print "%02d:%02d:%02d"%(hours,minutes,seconds)
+        # print "We got the time:"+str(datetime.strptime(str(abs(self.task_start_time)), '%H:%M')) #str(self.task_start_time%100) #str(self.task_start_time.hours)+":"+str(self.task_start_time.minutes)
+        if hours >= 24 or minutes > 59:
+            raise Warning(_("Invalid Task Start Time"))
+
+        seconds = self.task_end_time*60*60
+        minutes, seconds = divmod(seconds, 60)
+        hours, minutes = divmod(minutes, 60)
+
+        # print "%02d:%02d:%02d"%(hours,minutes,seconds)
+        if hours >= 24 or minutes > 59:
+            raise Warning(_("Invalid Task End Time"))
        
        
 class task_history(models.Model):
