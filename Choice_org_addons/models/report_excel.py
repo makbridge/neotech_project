@@ -11,6 +11,7 @@ from dateutil.parser import parse
 from odoo.exceptions import UserError, ValidationError
 from collections import namedtuple
 import math
+import re
 from xlsxwriter.utility import xl_rowcol_to_cell
 
 
@@ -19,6 +20,8 @@ def nameBox(row, col,  row_abs=None, col_abs=None):
 		cell = xl_rowcol_to_cell(row, col)
 		return cell
 
+def change_date_format(dt):
+        return re.sub(r'(\d{4})-(\d{1,2})-(\d{1,2})', '\\3-\\2-\\1', dt)
 
 class report_excel(models.TransientModel):
     _name = 'report.excel'
@@ -140,7 +143,7 @@ class report_excel(models.TransientModel):
         # 
         # employee_name = employee_name + '/ ' + r_name
         # worksheet.write('A1:A1',employee_name,header_format)
-        worksheet.merge_range(0,7,0,10,'From ' + date_from+' to '+date_to,title_format)
+        worksheet.merge_range(0,7,0,10,'From ' + change_date_format(date_from)+' to '+change_date_format(date_to),title_format)
 
         row1=1
         row=3
@@ -220,11 +223,11 @@ class report_excel(models.TransientModel):
                 # col += 1
                 worksheet.write(row,col+3,task_name,data_format)
                 # col += 1
-                worksheet.write(row,col+4,start_format,data_format)
+                worksheet.write(row,col+4,change_date_format(start_format),data_format)
                 # col += 1
                 worksheet.write(row,col+5,task_status,data_format)
                 # col += 1
-                worksheet.write(row,col+6,deadline,data_format)
+                worksheet.write(row,col+6,change_date_format(deadline),data_format)
                 # col += 1
                 if i.task_allocated_time :
                     alloted_time1 = datetime.strptime(alloted_time,'%H:%M:%S')
@@ -420,13 +423,13 @@ class report_excel(models.TransientModel):
                 # col += 1
                 worksheet.write(row+3,col+3,task_name,data_format)
                 # col += 1
-                worksheet.write(row+3,col+4,start_format,data_format)
+                worksheet.write(row+3,col+4,change_date_format(start_format),data_format)
                 # col += 1
-                worksheet.write(row+3,col+5,stop_format,data_format)
+                worksheet.write(row+3,col+5,change_date_format(stop_format),data_format)
                 # col += 1
                 worksheet.write(row+3,col+6,task_status,data_format)
                 # col += 1
-                worksheet.write(row+3,col+7,deadline,data_format)
+                worksheet.write(row+3,col+7,change_date_format(deadline),data_format)
                 # col += 1
                 if i.task_allocated_time :
                     alloted_time1 = datetime.strptime(alloted_time,'%H:%M:%S')
@@ -454,9 +457,9 @@ class report_excel(models.TransientModel):
                 # col += 1
 
                 date1 = datetime.strptime(start_format, '%Y-%m-%d')
-                date1 = date.strftime(date1, '%Y-%m-%d')
+                date1 = date.strftime(date1, '%d-%m-%Y')
                 date2 = datetime.today()
-                date2 = date.strftime(date2, '%Y-%m-%d')
+                date2 = date.strftime(date2, '%d-%m-%Y')
                 time_zero = datetime.strptime("00:00", '%H:%M') 
                 cummulative_time1 = float(time_spent) + float(manual_time_delta.total_seconds())
                 cummulative_time2 = timedelta(seconds=cummulative_time1)
@@ -666,13 +669,13 @@ class report_excel(models.TransientModel):
                 # col += 1
                 worksheet.write(row+5,col+3,task_name,data_format)
                 # col += 1
-                worksheet.write(row+5,col+4,start_format,data_format)
+                worksheet.write(row+5,col+4,change_date_format(start_format),data_format)
                 # col += 1
-                worksheet.write(row+5,col+5,stop_format,data_format)
+                worksheet.write(row+5,col+5,change_date_format(stop_format),data_format)
                 # col += 1
                 worksheet.write(row+5,col+6,task_status,data_format)
                 # col += 1
-                worksheet.write(row+5,col+7,deadline,data_format)
+                worksheet.write(row+5,col+7,change_date_format(deadline),data_format)
                 # col += 1
                 if i.task_allocated_time :
                     alloted_time1 = datetime.strptime(alloted_time,'%H:%M:%S')
@@ -903,13 +906,13 @@ class report_excel(models.TransientModel):
                 # col += 1
                 worksheet.write(row+7,col+3,task_name,data_format)
                 # col += 1
-                worksheet.write(row+7,col+4,start_format,data_format)
+                worksheet.write(row+7,col+4,change_date_format(start_format),data_format)
                 # col += 1
-                worksheet.write(row+7,col+5,stop_format,data_format)
+                worksheet.write(row+7,col+5,change_date_format(stop_format),data_format)
                 # col += 1
                 worksheet.write(row+7,col+6,task_status,data_format)
                 # col += 1
-                worksheet.write(row+7,col+7,deadline,data_format)
+                worksheet.write(row+7,col+7,change_date_format(deadline),data_format)
                 # col += 1
                 if i.task_allocated_time :
                     alloted_time1 = datetime.strptime(alloted_time,'%H:%M:%S')
@@ -1137,13 +1140,13 @@ class report_excel(models.TransientModel):
                 # col += 1
                 worksheet.write(row+9,col+3,task_name,data_format)
                 # col += 1
-                worksheet.write(row+9,col+4,start_format,data_format)
+                worksheet.write(row+9,col+4,change_date_format(start_format),data_format)
                 # col += 1
-                worksheet.write(row+9,col+5,stop_format,data_format)
+                worksheet.write(row+9,col+5,change_date_format(stop_format),data_format)
                 # col += 1
                 worksheet.write(row+9,col+6,task_status,data_format)
                 # col += 1
-                worksheet.write(row+9,col+7,deadline,data_format)
+                worksheet.write(row+9,col+7,change_date_format(deadline),data_format)
                 # col += 1
                 if i.task_allocated_time :
                     alloted_time1 = datetime.strptime(alloted_time,'%H:%M:%S')
@@ -1356,13 +1359,13 @@ class report_excel(models.TransientModel):
                 # col += 1
                 worksheet.write(row+11,col+3,task_name,data_format)
                 # col += 1
-                worksheet.write(row+11,col+4,start_format,data_format)
+                worksheet.write(row+11,col+4,change_date_format(start_format),data_format)
                 # col += 1
-                worksheet.write(row+11,col+5,stop_format,data_format)
+                worksheet.write(row+11,col+5,change_date_format(stop_format),data_format)
                 # col += 1
                 worksheet.write(row+11,col+6,task_status,data_format)
                 # col += 1
-                worksheet.write(row+11,col+7,deadline,data_format)
+                worksheet.write(row+11,col+7,change_date_format(deadline),data_format)
                 # col += 1
                 if i.task_allocated_time :
                     alloted_time1 = datetime.strptime(alloted_time,'%H:%M:%S')
@@ -1539,7 +1542,7 @@ class report_excel(models.TransientModel):
         if rewer_id:
             worksheet.merge_range(0, 14, 0, 18, "Reviewer: "+rewer_id.name,title_format)
 
-        worksheet.merge_range(0,11,0,13,'Date: ' + todays_date,title_format)
+        worksheet.merge_range(0,11,0,13,'Date: ' + change_date_format(todays_date),title_format)
         row=2
         sr_no = 0
         total_cummutative = timedelta(hours=0)
@@ -1780,9 +1783,9 @@ class report_excel(models.TransientModel):
             # col += 1
             worksheet.write(row,col+3,task_name,data_format)
             # col += 1
-            worksheet.write(row,col+4,start_format,data_format)
+            worksheet.write(row,col+4,change_date_format(start_format),data_format)
             # col += 1
-            worksheet.write(row,col+5,stop_format,data_format)
+            worksheet.write(row,col+5,change_date_format(stop_format),data_format)
             # col += 1
             worksheet.write(row,col+6,task_status,data_format)
             # col += 1
@@ -1791,7 +1794,7 @@ class report_excel(models.TransientModel):
             attended_time = datetime.strptime(attended_time, '%H:%M:%S')
             # worksheet.write(row,col+7,str(attended_time.time()),data_format)
             # col += 1
-            worksheet.write(row,col+7,deadline,data_format)
+            worksheet.write(row,col+7,change_date_format(deadline),data_format)
             # col += 1
             if i.task_allocated_time :
                 alloted_time1 = datetime.strptime(alloted_time,'%H:%M:%S')

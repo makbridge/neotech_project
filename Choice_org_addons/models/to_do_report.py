@@ -11,6 +11,7 @@ from dateutil.parser import parse
 from odoo.exceptions import UserError, ValidationError
 from collections import namedtuple
 import math
+import re
 from xlsxwriter.utility import xl_rowcol_to_cell
 
 
@@ -18,6 +19,9 @@ def nameBox(row, col,  row_abs=None, col_abs=None):
 		cell = ''
 		cell = xl_rowcol_to_cell(row, col)
 		return cell
+
+def change_date_format(dt):
+        return re.sub(r'(\d{4})-(\d{1,2})-(\d{1,2})', '\\3-\\2-\\1', dt)
 
 class ToDoReport(models.TransientModel):
     _name='todo.report'
@@ -112,7 +116,7 @@ class ToDoReport(models.TransientModel):
             ('to_do_task','=',True)])
         print "\n\n_______task_search_ids_______",task_search_ids
 
-        worksheet.merge_range(0,5,0,8,'From ' + date_from+' to '+date_to,title_format)
+        worksheet.merge_range(0,5,0,8,'From ' + change_date_format(date_from)+' to '+change_date_format(date_to),title_format)
 
 
         row=3
@@ -160,7 +164,7 @@ class ToDoReport(models.TransientModel):
             worksheet.write(row,col+1,task_type,data_format)
             worksheet.write(row,col+2,task_priority,data_format)
             worksheet.write(row,col+3,task_status,data_format)
-            worksheet.write(row,col+4,deadline,data_format)
+            worksheet.write(row,col+4,change_date_format(deadline),data_format)
             if i.task_allocated_time :
                 alloted_time1 = datetime.strptime(alloted_time,'%H:%M:%S')
                 alloted_time2 = date.strftime(alloted_time1, '%H:%M')
