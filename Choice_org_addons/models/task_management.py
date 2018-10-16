@@ -179,7 +179,7 @@ class TaskManagement(models.Model):
     total_working_time = fields.Char('Total Working Time for the day')
     overlap_time =  fields.Char('Overlap Time for the day')
     ideal_time = fields.Char('Ideal Time for the day')
-    total_time = fields.Char('Total Time',compute='_total_time')
+    # total_time = fields.Char('Total Time',compute='_total_time')
     initial_completion = fields.Char('Initial % of Completion')
     current_completion = fields.Char('Current % of Completion')
     completion = fields.Char(string='% of Completion')
@@ -197,24 +197,24 @@ class TaskManagement(models.Model):
     task_approve_check = fields.Boolean(string='')
     
     
-    #COmpute Total Time (total_time=cummulative_time+timed_time+total_working_time+overlap_time+manual_time)
-    @api.depends("cummulative_time","timed_time","total_working_time","overlap_time",'manual_time')
-    def _total_time(self):
-        for rec in self:
-            string=''
-            cummulative_time=rec.cummulative_time.replace(":",'.'),
-            cummulative_time=string.join(cummulative_time)
-            timed_time=rec.timed_time.replace(":",'.'),
-            timed_time=string.join(timed_time)
-            total_working_time=rec.total_working_time.replace(":",'.'),
-            total_working_time=string.join(total_working_time)
-            overlap_time=rec.overlap_time.replace(":",'.'),
-            overlap_time=string.join(overlap_time)
-            manual_time=rec.manual_time.replace(":",'.'),
-            manual_time=string.join(manual_time)
+    # #COmpute Total Time (total_time=cummulative_time+timed_time+total_working_time+overlap_time+manual_time)
+    # @api.depends("cummulative_time","timed_time","total_working_time","overlap_time",'manual_time')
+    # def _total_time(self):
+    #     for rec in self:
+    #         string=''
+    #         cummulative_time=rec.cummulative_time.replace(":",'.'),
+    #         cummulative_time=string.join(cummulative_time)
+    #         timed_time=rec.timed_time.replace(":",'.'),
+    #         timed_time=string.join(timed_time)
+    #         total_working_time=rec.total_working_time.replace(":",'.'),
+    #         total_working_time=string.join(total_working_time)
+    #         overlap_time=rec.overlap_time.replace(":",'.'),
+    #         overlap_time=string.join(overlap_time)
+    #         manual_time=rec.manual_time.replace(":",'.'),
+    #         manual_time=string.join(manual_time)
            
-            total_time=float(cummulative_time)+float(timed_time)+float(total_working_time)+float(overlap_time)+float(manual_time)
-            rec.total_time=str(total_time).replace(".",':')
+    #         total_time=float(cummulative_time)+float(timed_time)+float(total_working_time)+float(overlap_time)+float(manual_time)
+    #         rec.total_time=str(total_time).replace(".",':')
             
         
         
