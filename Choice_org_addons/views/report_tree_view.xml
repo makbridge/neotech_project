@@ -31,12 +31,19 @@
 					<!-- <field name="attended_time"/> -->
                     <field name="state"/>
                     <field name="deadline"/>
-                    <field name="task_allocated_time" widget="float_time"/>
-					<field name="cummulative_time"/>
+                    <field name="task_allocated_time" widget="float_time" sum="Allocated Time"/>
+					<!-- <field name="cummulative_time"/>
                     <field name="timed_time"/>
                     <field name="manual_time"/>
-					<field name="total_working_time"/>
-                    <field name="overlap_time"/>
+					<field name="total_working_time" />
+                    <field name="overlap_time"/> -->
+                    
+                    <field name="cummulative_time_float" widget="float_time" sum="Cummulative Time"/>
+                    <field name="timed_time_float" widget="float_time" sum="Timed Time"/>
+                    <field name="manual_time_float" widget="float_time" sum="Manual Time"/>
+					<field name="total_working_time_float" widget="float_time" sum="Total working Time"/>
+                    <field name="overlap_time_float" widget="float_time" sum="Overlap Time"/>
+                    
                     <!-- <field name="total_time"/> -->
                     <!-- <field name="ideal_time"/> -->
 					<field name="initial_completion"/>

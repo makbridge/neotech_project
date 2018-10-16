@@ -174,11 +174,18 @@ class TaskManagement(models.Model):
     #new one2many added for observer comments above observer_comments is kept invisible
     observer_comments_ids = fields.One2many('observer.comments','task_mgmt_id',string='Observer Comments')
     
-    cummulative_time = fields.Char('Cummulative Time')
-    timed_time = fields.Char('Timed Time for the day')
-    total_working_time = fields.Char('Total Working Time for the day')
-    overlap_time =  fields.Char('Overlap Time for the day')
-    ideal_time = fields.Char('Ideal Time for the day')
+    cummulative_time = fields.Char(compute='_total_time',string='Cummulative Time')
+    timed_time = fields.Char(compute='_total_time',string='Timed Time for the day')
+    total_working_time = fields.Char(compute='_total_time',string='Total Working Time for the day')
+    overlap_time =  fields.Char(compute='_total_time',string='Overlap Time for the day')
+    ideal_time = fields.Char(compute='_total_time',string='Ideal Time for the day')
+    
+    cummulative_time_float = fields.Float(compute='_total_time',string='Cummulative Time')
+    timed_time_float = fields.Float(compute='_total_time',string='Timed Time for the day')
+    total_working_time_float = fields.Float(compute='_total_time',string='Total Working Time for the day')
+    overlap_time_float =  fields.Float(compute='_total_time',string='Overlap Time for the day')
+    manual_time_float = fields.Float(compute='_total_time',string='Manual Time')
+    
     # total_time = fields.Char('Total Time',compute='_total_time')
     initial_completion = fields.Char('Initial % of Completion')
     current_completion = fields.Char('Current % of Completion')
@@ -197,24 +204,34 @@ class TaskManagement(models.Model):
     task_approve_check = fields.Boolean(string='')
     
     
-    # #COmpute Total Time (total_time=cummulative_time+timed_time+total_working_time+overlap_time+manual_time)
-    # @api.depends("cummulative_time","timed_time","total_working_time","overlap_time",'manual_time')
-    # def _total_time(self):
-    #     for rec in self:
-    #         string=''
-    #         cummulative_time=rec.cummulative_time.replace(":",'.'),
-    #         cummulative_time=string.join(cummulative_time)
-    #         timed_time=rec.timed_time.replace(":",'.'),
-    #         timed_time=string.join(timed_time)
-    #         total_working_time=rec.total_working_time.replace(":",'.'),
-    #         total_working_time=string.join(total_working_time)
-    #         overlap_time=rec.overlap_time.replace(":",'.'),
-    #         overlap_time=string.join(overlap_time)
-    #         manual_time=rec.manual_time.replace(":",'.'),
-    #         manual_time=string.join(manual_time)
-           
-    #         total_time=float(cummulative_time)+float(timed_time)+float(total_working_time)+float(overlap_time)+float(manual_time)
-    #         rec.total_time=str(total_time).replace(".",':')
+    #COmpute Total Time (total_time=cummulative_time+timed_time+total_working_time+overlap_time+manual_time)
+    @api.depends("cummulative_time","timed_time","total_working_time","overlap_time",'manual_time',"cummulative_time_float","timed_time_float","total_working_time_float","overlap_time_float",'manual_time_float')
+    def _total_time(self):
+        for rec in self:
+            string=''
+            if rec.cummulative_time:
+                cummulative_time=rec.cummulative_time.replace(":",'.'),
+                cummulative_time=string.join(cummulative_time)
+                rec.cummulative_time_float=float(cummulative_time)
+            if rec.timed_time:
+                timed_time=rec.timed_time.replace(":",'.'),
+                timed_time=string.join(timed_time)
+                rec.timed_time_float=float(timed_time)
+            if rec.total_working_time:
+                total_working_time=rec.total_working_time.replace(":",'.'),
+                total_working_time=string.join(total_working_time)
+                rec.total_working_time_float=float(total_working_time)
+            if rec.overlap_time:
+                overlap_time=rec.overlap_time.replace(":",'.'),
+                overlap_time=string.join(overlap_time)
+                rec.overlap_time_float=float(manual_time)
+            if rec.manual_time:
+                manual_time=rec.manual_time.replace(":",'.'),
+                manual_time=string.join(manual_time)
+                rec.manual_time_float=float(manual_time)
+                                              
+#             total_time=float(cummulative_time)+float(timed_time)+float(total_working_time)+float(overlap_time)+float(manual_time)
+#             rec.total_time=str(total_time).replace(".",':')
             
         
         
