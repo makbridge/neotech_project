@@ -1171,13 +1171,6 @@ class manual_time(models.Model):
 
     @api.onchange('task_start_time','task_end_time')
     def _onchange_task_type(self):
-        
-        if self.task_start_time and self.task_end_time:
-            
-            task_manual_time = abs(self.task_end_time - self.task_start_time)
-            # task_manual_time2 = datetime.strptime(str(task_manual_time), '%H.%M')
-            # task_manual_time3 = date.strftime(task_manual_time2, '%H:%M')
-            self.task_manual_time = task_manual_time
 
         seconds = self.task_start_time*60*60
         minutes, seconds = divmod(seconds, 60)
@@ -1188,14 +1181,21 @@ class manual_time(models.Model):
         if hours >= 24 or minutes > 59:
             raise Warning(_("Invalid Task Start Time"))
 
-        seconds = self.task_end_time*60*60
-        minutes, seconds = divmod(seconds, 60)
-        hours, minutes = divmod(minutes, 60)
+        seconds1 = self.task_end_time*60*60
+        minutes1, seconds1 = divmod(seconds1, 60)
+        hours1, minutes1 = divmod(minutes1, 60)
 
-        # print "%02d:%02d:%02d"%(hours,minutes,seconds)
-        if hours >= 24 or minutes > 59:
+        # print "%02d:%02d:%02d"%(hours1,minutes1,seconds1)
+        if hours1 >= 24 or minutes1 > 59:
             raise Warning(_("Invalid Task End Time"))
        
+        if self.task_start_time and self.task_end_time:
+            
+            task_manual_time = abs(self.task_end_time - self.task_start_time)
+            # task_manual_time2 = datetime.strptime(str(task_manual_time), '%H.%M')
+            # task_manual_time3 = date.strftime(task_manual_time2, '%H:%M')
+            self.task_manual_time = task_manual_time
+
        
 class task_history(models.Model):
     _name = 'task.history'
