@@ -54,9 +54,9 @@
                     <button name="drop_task" type="object" string="Drop"
                             attrs="{'invisible':[('state','in',['completed','drop','in_progress','interested','draft'])]}"/>
 
-                <button name="approve_task" type="object" string="Approve"/>
+<!--                 <button name="approve_task" type="object" string="Approve"/>
                 <button name="reject_task" type="object" string="Reject" />
-
+ -->
                     <field name="state" widget="statusbar" statusbar_visible="draft,in_progress,completed"
                            options="{'fold_field': 'fold'}"/>
                 </header>
