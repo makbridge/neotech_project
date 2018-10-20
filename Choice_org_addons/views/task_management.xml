@@ -372,7 +372,8 @@
                                 <field name="task_priority" widget="priority" groups="base.group_user"/>
                                 <b>
                                 <p
-								   attrs="{'invisible':[('state','in',['completed','deferred','drop','draft','in_progress','pause','waiting'])]}">
+								   attrs="{'invisible':['|',('state','in',['draft','in_progress','pause','waiting']),
+                                   ('state','in',['completed','deferred','drop']),('approval_status','in',['approved','reject'])]}">
 									Approval Status:   
                                     <field name="approval_status" widget="color">
                                     </field>
