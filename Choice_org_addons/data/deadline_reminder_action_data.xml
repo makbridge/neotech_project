@@ -77,6 +77,16 @@
                             font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
                        
                         <p>
+                            Taks : <b>${object.name} </b> Postponed !!!<br>
+                          <table>
+                            <tr><th>Date Of Comment</th><th>Comment By Observer</th></tr>
+                            % for oc in object.observer_comments_ids:
+                          <tr>
+                              <td>${oc.observer_timestamp}</td>
+                              <td>${oc.name}</td>
+                          </tr>
+                            % endfor 
+                          </table>
                             This Email Is for the postponed task....!!!!!
                         </p>
                     </div>
