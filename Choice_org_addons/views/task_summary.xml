@@ -178,12 +178,46 @@
         </field>
     </record>
 
+    <record id="view_task_summary_filter" model="ir.ui.view">
+        <field name="name">view.task.summary.filter</field>
+        <field name="model">task.summary</field>
+        <field name="arch" type="xml">
+            <search string="Search Tasks Summary">
+                <!-- <field name="name" string="Task Name"/> -->
+                <!-- <field name="deadline" string="Deadline"/> -->
+                <!-- <separator/> -->
+                
+                <filter string="Current Week" name="last7days" domain="[('timesheet_date','&lt;',(context_today()+relativedelta(days=7)).strftime('%Y-%m-%d'))]"/>
+
+<!-- 
+, ('timesheet_date','&gt;=',context_today().strftime('%Y-%m-%d'))
+                <filter string="Last 7 Day's Tasks Summary" name="last7days"
+                        domain="[('estimated_start_date', '=', context_today().strftime('%Y-%m-%d')),
+                                ('state','!=','completed')]"/>
+ -->                <!-- <filter string="Tasks Assigned To" name="assigned_tasks"
+                        domain="[('reviewer', '=', uid)]"/> -->
+<!--                 <filter string="Pending Tasks" name="pending" domain="[('state','!=','completed')]"/>
+ -->                <!--<filter string="Approved Tasks" name="approved" domain="[('approval_status','=','approved')]"/>-->
+                <!-- <filter string="Completed Tasks" name="completed" domain="[('state','=','completed')]"/> -->
+                <!-- <filter string="Rejected Tasks" name="rejected" domain="[('task_reject','=',True)]"/> -->
+                <!-- <filter string="Paused Tasks" name="paused" domain="[('state','=','pause')]"/> -->
+                <!-- <filter string="Dropped Tasks" name="dropped" domain="[('state','=','drop')]"/> -->
+                <!-- <filter string='From Month' domain="[]" context="{'group_by' : 'estimated_start_date'}"/> -->
+                <!-- <filter string="Status" domain="[]" context="{'group_by' : 'state'}" /> -->
+<!--                 <filter string="Current Week" name="Current Week" domain="[('date','&lt;',(context_today()+relativedelta(days=7)).strftime('%Y-%m-%d')), ('date','&gt;=',context_today().strftime('%Y-%m-%d'))]"/>
+                
+ -->            </search>
+        </field>
+        </record>
+
 
     <record id="action_view_task_summary" model="ir.actions.act_window">
         <field name="name">Tasks Own Summary</field>
         <field name="res_model">task.summary</field>
         <field name="view_mode">tree,form</field>
         <field name="domain">[('employee_id','=',uid)]</field>
+        <field name="context">{ 'search_default_last7days': 1, }</field>
+        <field name="search_view_id" ref="view_task_summary_filter"/>
     </record>
     
     
