@@ -402,7 +402,6 @@ class report_excel(models.TransientModel):
                 cummulative_time =  str(timedelta(seconds=cummulative))
                 
                 timed_time_for_day = timedelta(seconds=total_second)
-                print "\n\n_________timed_time_for_day______________",timed_time_for_day,type(timed_time_for_day)
                 # if total_second > 0.0:
                 #         if total_seconds > 0.0:
                 #                 if total_second > total_seconds :
@@ -446,7 +445,6 @@ class report_excel(models.TransientModel):
                     timed_time_for_day1 = str(timed_time_for_day_hr + timed_time_for_day_min) + ":"+"0" + str(timed_time_for_day_sec)
                 else:
                     timed_time_for_day1 = str(timed_time_for_day_hr + timed_time_for_day_min) + ":" + str(timed_time_for_day_sec)
-                print "\n\n______timed_time_for_day1________",timed_time_for_day1
                 worksheet.write(row+3,col+10,timed_time_for_day1,data_format)
                 # col += 1
                 manual_time = str(timedelta(seconds=total_seconds))
@@ -487,7 +485,6 @@ class report_excel(models.TransientModel):
                 worksheet.write(row+3,col+13,delay,data_format)
                 # /col += 1
                 if i.delay:
-                    print "\n\n________REASON_________",i.task_delay_reason
                     worksheet.write(row+3,col+14,i.task_delay_reason,data_format)
                 else:
                     worksheet.write(row+3,col+14,'No Delay',data_format)
@@ -692,7 +689,6 @@ class report_excel(models.TransientModel):
                     timed_time_for_day1 = str(timed_time_for_day_hr + timed_time_for_day_min) + ":"+"0" + str(timed_time_for_day_sec)
                 else:
                     timed_time_for_day1 = str(timed_time_for_day_hr + timed_time_for_day_min) + ":" + str(timed_time_for_day_sec)
-                print "\n\n______timed_time_for_day1________",timed_time_for_day1
                 worksheet.write(row+5,col+10,timed_time_for_day1,data_format)
                 # col += 1
                 manual_time = str(timedelta(seconds=total_seconds))
@@ -725,7 +721,6 @@ class report_excel(models.TransientModel):
                 worksheet.write(row+5,col+13,delay,data_format)
                 # /col += 1
                 if i.delay:
-                    print "\n\n________REASON_________",i.task_delay_reason
                     worksheet.write(row+5,col+14,i.task_delay_reason,data_format)
                 else:
                     worksheet.write(row+5,col+14,'No Delay',data_format)
@@ -928,7 +923,6 @@ class report_excel(models.TransientModel):
                     timed_time_for_day1 = str(timed_time_for_day_hr + timed_time_for_day_min) + ":"+"0" + str(timed_time_for_day_sec)
                 else:
                     timed_time_for_day1 = str(timed_time_for_day_hr + timed_time_for_day_min) + ":" + str(timed_time_for_day_sec)
-                print "\n\n______timed_time_for_day1________",timed_time_for_day1
                 worksheet.write(row+7,col+10,timed_time_for_day1,data_format)
                 # col += 1
                 manual_time = str(timedelta(seconds=total_seconds))
@@ -959,7 +953,6 @@ class report_excel(models.TransientModel):
                 worksheet.write(row+7,col+12,delay,data_format)
                 # /col += 1
                 if i.delay:
-                    print "\n\n________REASON_________",i.task_delay_reason
                     worksheet.write(row+7,col+13,i.task_delay_reason,data_format)
                 else:
                     worksheet.write(row+7,col+13,'No Delay',data_format)
@@ -1182,7 +1175,6 @@ class report_excel(models.TransientModel):
                 worksheet.write(row+9,col+12,delay,data_format)
                 # /col += 1
                 if i.delay:
-                    print "\n\n________REASON_________",i.task_delay_reason
                     worksheet.write(row+9,col+13,i.task_delay_reason,data_format)
                 else:
                     worksheet.write(row+9,col+13,'No Delay',data_format)
@@ -1382,7 +1374,6 @@ class report_excel(models.TransientModel):
                     timed_time_for_day1 = str(timed_time_for_day_hr + timed_time_for_day_min) + ":"+"0" + str(timed_time_for_day_sec)
                 else:
                     timed_time_for_day1 = str(timed_time_for_day_hr + timed_time_for_day_min) + ":" + str(timed_time_for_day_sec)
-                print "\n\n______timed_time_for_day1________",timed_time_for_day1
                 worksheet.write(row+11,col+10,timed_time_for_day1,data_format)
                 # col += 1
                 manual_time = str(timedelta(seconds=total_seconds))
@@ -1414,7 +1405,6 @@ class report_excel(models.TransientModel):
                 worksheet.write(row+11,col+13,delay,data_format)
                 # /col += 1
                 if i.delay:
-                    print "\n\n________REASON_________",i.task_delay_reason
                     worksheet.write(row+11,col+14,i.task_delay_reason,data_format)
                 else:
                     worksheet.write(row+11,col+14,'No Delay',data_format)
@@ -1570,7 +1560,6 @@ class report_excel(models.TransientModel):
             temp_row = 0
             percent = 0.0
             
-            print "\n\n_______i.time_spent______54____",i.time_spent
             employee = i.assigned_to.name
             worksheet.merge_range(0, 0, 0, 3, "Employee: "+employee,title_format)
             
@@ -1583,15 +1572,11 @@ class report_excel(models.TransientModel):
                     date1 = l.task_history_date
                     date2 = datetime.today().strftime('%Y-%m-%d')
 
-                    print "\n\n______l.task_spend_time___58_____",l.task_spend_time
                     if date1 == date2:
                         total_second +=l.task_spend_time
-                        print "\n\n______total_second____61_____",total_second
 
                         
-                    print "\n\n___________i.current_completion___________",i.current_completion
                     if date1 < date2 or date1 == date2: 
-                        print "\n\n_________inside iffffff_________" 
                         percent = 0.0 
                         percent = l.task_percent_completion 
                         i.initial_completion = l.task_percent_completion 
@@ -1620,11 +1605,6 @@ class report_excel(models.TransientModel):
             if i.current_progress > 0.0:
                 difference1 = float(i.current_progress) - float(i.initial_progress)
 
-            print"\n\n____________i.initial_progress____1538____",i.initial_progress
-            print "___________i.current_progress_____1539____",i.current_progress
-            print "_________i.current_progress_______1540______-",difference1
-
-            
             overlap_time = 0.0
             overlap_time1 =0.0
             overlap_time_delta = timedelta(minutes=0)
@@ -1697,7 +1677,6 @@ class report_excel(models.TransientModel):
             task_priority = dict(i._fields['task_priority'].selection).get(i.task_priority)
             task_type = dict(i._fields['task_type'].selection).get(i.task_type)
             task_status = dict(i._fields['state'].selection).get(i.state)
-            print "\n\n___________task_status_________1680________",task_status
             task_name = i.name if i.name else " "
             start_date = i.estimated_start_date
             end_date = i.estimated_end_date
@@ -1739,7 +1718,6 @@ class report_excel(models.TransientModel):
                 date2 = datetime.today().strftime('%Y-%m-%d')
                 if date1 == date2:
                     manual_time += j.task_manual_time
-                    print "\n\n___manual_time_____1425________",manual_time
                 
             # for p in j.task_manual_comments:
             #         comment = p.comments
@@ -1797,8 +1775,8 @@ class report_excel(models.TransientModel):
             worksheet.write(row,col+7,change_date_format(deadline),data_format)
             # col += 1
             if i.task_allocated_time :
+            	print alloted_time,"\n\n\n\n\n\n\n\n\n"
                 alloted_time1 = datetime.strptime(alloted_time,'%H:%M:%S')
-                print "\n\n____alloted_time_delta____1651______",alloted_time_delta,type(alloted_time_delta)
                 alloted_time2 = date.strftime(alloted_time1, '%H:%M')
                 worksheet.write(row,col+8,alloted_time2,data_format)
             total_alloted += alloted_time_delta
@@ -1947,10 +1925,8 @@ class report_excel(models.TransientModel):
                 worksheet.write(row,col+17,str(x_variation2),merge_format)
             else:
                 worksheet.write(row,col+17,"00:00",merge_format)
-            print "\n\n_________DELAY________",i.delay
             worksheet.write(row,col+18,delay,merge_format)
             if i.delay:
-                print "\n\n________REASON_________",i.task_delay_reason
                 worksheet.write(row,col+19,i.task_delay_reason,data_format)
             else:
                 worksheet.write(row,col+19,'No Delay',data_format)
