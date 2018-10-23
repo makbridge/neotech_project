@@ -53,6 +53,11 @@
                             ('state','in',['drop','draft','completed'])]}"/>
                     <button name="drop_task" type="object" string="Drop"
                             attrs="{'invisible':[('state','in',['completed','drop','in_progress','interested','draft'])]}"/>
+                    
+                    <button name="approve_task" type="object" string="Approve"
+                                            attrs="{'invisible':[('approval_status','in',['reject'])]}"/>
+                    <button name="reject_task" type="object"  string='Reject'
+                                            attrs="{'invisible':[('approval_status','in',['approved'])]}"/>
 
 <!--                 <button name="approve_task" type="object" string="Approve" attrs="{'invisible':[('approval_status', '!=', 'reject'),('state','=','completed')]}" />
                 <button name="reject_task" type="object" string="Reject" attrs="{'invisible':[('approval_status', '!=', 'reject'),('state','=','completed')]}" />
@@ -74,7 +79,7 @@
  -->
                 <div class="oe_title">
                     <h1 class="o_row">
-                        <field name="current_user" readonly="1"/>
+                        <field name="current_user"/>
                     </h1>
                     <br />
                     <h4 class="o_row">
@@ -93,6 +98,8 @@
                         <!-- <field name="partner_type" nolabel="1" widget="selection" string="" attrs="{'required': [('payment_type', 'in', ('inbound', 'outbound'))], 'invisible': [('payment_type', 'not in', ('inbound', 'outbound'))], 'readonly': [('state', '!=', 'draft')]}"/> -->
                         <!--<field name="subject"/>-->
                         <field name="task_type" attrs="{'readonly':[('state','in',['completed','drop'])]}"/>
+                        <field name="approval_status" invisible="1"/>
+                        <field name="user_id" invisible="1" />
                         <field name="reviewer" class="o_task_user_field" options='{"no_open": True}'
                                attrs="{'readonly':[('state','in',['completed','drop'])], 'required':[('task_type', '!=', 'self_assigned')]}"/>
                         <field name="assigned_to" class="o_task_user_field" options='{"no_open": True}'

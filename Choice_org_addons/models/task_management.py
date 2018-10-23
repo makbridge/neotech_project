@@ -200,6 +200,7 @@ class TaskManagement(models.Model):
     to_do_task = fields.Boolean('To-Do Task')
     check =fields.Boolean(' ')
     current_user = fields.Many2one('res.users','Employee', default=lambda self: self.env.user)
+    user_id = fields.Many2one('res.users','Current User', default=lambda self: self.env.user)
     # current_month_tasks = fields.Datetime(string="Current Month", default=time.strftime('%Y-01-01'))
     task_approve_check = fields.Boolean(string='')
     
@@ -479,6 +480,20 @@ class TaskManagement(models.Model):
             else:
                 raise ValidationError(_("You cannot start this task. It is not assigned to you."))
         
+        task_summary_obj = self.env['task.summary']
+        if self.assigned_to:
+            task_summary_search = task_summary_obj.search([('timesheet_date','=',fields.Date.to_string(datetime.now().date())),
+                ('employee_id','=',self.assigned_to.id)])
+            if task_summary_search:
+                self.task_summary_id = task_summary_search.id
+                
+            else:
+                task_summary_create = task_summary_obj.create({'employee_id':self.assigned_to.id,
+                                            'timesheet_date':datetime.now().date(),
+                                            
+                                           })
+                self.task_summary_id = task_summary_create.id
+        
     @api.multi
     def stop_timer(self):
         
@@ -610,19 +625,19 @@ class TaskManagement(models.Model):
                 
                 
             
-            task_summary_obj = self.env['task.summary']
-            if self.assigned_to:
-                task_summary_search = task_summary_obj.search([('timesheet_date','=',fields.Date.to_string(datetime.now().date())),
-                    ('employee_id','=',self.assigned_to.id)])
-                if task_summary_search:
-                    self.task_summary_id = task_summary_search.id
-                    
-                else:
-                    task_summary_create = task_summary_obj.create({'employee_id':self.assigned_to.id,
-                                                'timesheet_date':datetime.now().date(),
-                                                
-                                               })
-                    self.task_summary_id = task_summary_create.id
+#             task_summary_obj = self.env['task.summary']
+#             if self.assigned_to:
+#                 task_summary_search = task_summary_obj.search([('timesheet_date','=',fields.Date.to_string(datetime.now().date())),
+#                     ('employee_id','=',self.assigned_to.id)])
+#                 if task_summary_search:
+#                     self.task_summary_id = task_summary_search.id
+#                     
+#                 else:
+#                     task_summary_create = task_summary_obj.create({'employee_id':self.assigned_to.id,
+#                                                 'timesheet_date':datetime.now().date(),
+#                                                 
+#                                                })
+#                     self.task_summary_id = task_summary_create.id
         else:
             raise ValidationError(_("You cannot Stop this task. It is not assigned to you."))
         
@@ -1046,17 +1061,12 @@ class TaskManagement(models.Model):
        
     @api.multi
     def approve_task(self):
-        print "\n\n_____INSIDE APPROVE TASK______",self
         for i in self:
-            print "\n\n__________i__________",i
             if i.task_summary_id:
-                print "\n\n__________i.task_summary_id___________",i.task_summary_id
                 if (i.task_summary_id.reviewer_id.id == self._uid) or (self._uid == 1):
-                    print "\n\n_________i.approval_status _____________",i.approval_status 
                     i.approval_status = 'approved'
-                    print("approved")
                 else:
-                    raise ValidationError(_("You donot have permission to approve this task."))
+                    raise ValidationError(_("You do not have permission to approve this task."))
         
     @api.multi
     def reject_task(self):
