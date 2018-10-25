@@ -99,5 +99,36 @@
             </field>
     </record>
 
+        <record id="mail_on_observer_comment_on_task" model="mail.template">
+            <field name="name">Observer Comment</field>
+            <field name="email_from">${object.assigned_to.company_id.name}&lt;${object.assigned_to.company_id.email}&gt;</field>
+            <field name="email_to">${object.assigned_to.partner_id.email}</field>
+            <field name="subject">Observer Comment Notification</field>
+            <field name="model_id" ref="model_task_management"/>
+            <field name="auto_delete" eval="True" />
+            <field name="body_html"><![CDATA[
+                <div class="page">
+                    <div style="font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif;
+                            font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
+                        <p>Hello ${object.assigned_to.partner_id.name},</p>
+                        <p> <strong>${object.name}</strong> has been commented by your respective observer.
+                          <table>
+                            <tr><th>Date Of Comment</th><th>Comment By Observer</th></tr>
+                            % for oc in object.observer_comments_ids:
+                          <tr>
+                              <td>${oc.observer_timestamp}</td>
+                              <td>${oc.name}</td>
+                          </tr>
+                            % endfor 
+                          </table>
+                            </p>
+                    </div>
+                </div>
+
+            ]]>
+
+            </field>
+    </record>
+
     </data>
 </odoo>

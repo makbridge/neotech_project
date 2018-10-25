@@ -285,7 +285,18 @@ class TaskManagement(models.Model):
                 start_date = datetime.strptime(vals.get('estimated_start_date') if vals.get('estimated_start_date') else self.estimated_start_date,'%Y-%m-%d')
                 end_date = datetime.strptime(vals.get('estimated_end_date') if vals.get('estimated_end_date') else self.estimated_end_date,'%Y-%m-%d')
                 if start_date > end_date:
-                    raise ValidationError(_("Start date cannot be greater than end date."))    
+                    raise ValidationError(_("Start date cannot be greater than end date."))
+            if vals.get('observer_comments_ids'):
+                task_write = super(TaskManagement, self).write(vals)
+                task_id = self.env['task.management'].search([('id','=',self.id)])
+                ir_model_data = self.env['ir.model.data']
+                template_id = ir_model_data.get_object_reference('Choice_org_addons', 'mail_on_observer_comment_on_task')[1]
+                template_brws = self.env['mail.template'].browse(template_id)
+                if template_brws:
+                    template_brws = self.env['mail.template'].browse(template_id)
+                if template_brws:
+                    template_brws.send_mail(task_id.id, force_send=True)
+
         task_write = super(TaskManagement, self).write(vals)  
         
         return task_write
